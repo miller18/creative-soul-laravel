@@ -31,6 +31,7 @@ View::composer('schedules.edit', function($view)
 Route::get('/', function()
 {
 	return Redirect::to('schedules');
+	// return app()->env;
 });
 
 Route::get('schedules', function()
