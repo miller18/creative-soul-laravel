@@ -27,10 +27,10 @@
 	// and store them locally
 	'connections' => array(
 		'production' => array(
-			'host'      => 'www.tiny-zebra.com',
+			'host'      => 'tiny-zebra.com',
 			'username'  => 'tinyzebra',
 			'password'  => 'Rbaayyeg2!',
-			'key'       => '/home/vagrant/.ssh/id_rsa',
+			'key'       => '',
 			'keyphrase' => '',
 			'agent'     => '',
 		),

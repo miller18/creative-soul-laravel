@@ -8,7 +8,7 @@
 
 	// The SSH/HTTPS address to your repository
 	// Example: https://github.com/vendor/website.git
-	'repository' => '',
+	'repository' => 'https://github.com/miller18/creative-soul-laravel',
 
 	// The repository credentials : you can leave those empty
 	// if you're using SSH or if your repository is public
