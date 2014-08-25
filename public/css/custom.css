@@ -1,0 +1,18 @@
+table {
+	width: 100%;
+}
+
+th, td {
+	text-align: center;
+}
+
+.totals {
+	margin: 20px 0;
+	padding: 10px 0;
+	border-top: 1px solid #eee;
+	border-bottom: 1px solid #eee;
+}
+
+.totals th {
+	width: 16.666%;
+}
