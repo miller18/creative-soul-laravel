@@ -5,27 +5,22 @@ Route::model('schedule', 'Schedule');
 View::composer('schedules.edit', function($view)
 {
 	$instructors = Instructor::all();
-	
+    $students = Student::all();
+
 	if(count($instructors) > 0){
 		$instructor_options = array_combine($instructors->lists('id'), $instructors->lists('first_name'));
 	} else {
 		$instructor_options = array(null, 'Unspecified');
 	}
 
-	$view->with('instructor_options', $instructor_options);
-});
+    if(count($students) > 0){
+        $student_options = array_combine($students->lists('id'), $students->lists('first_name'));
+    } else {
+        $student_options = array(null, 'Unspecified');
+    }
 
-View::composer('schedules.edit', function($view)
-{
-	$students = Student::all();
-	
-	if(count($students) > 0){
-		$student_options = array_combine($students->lists('id'), $students->lists('first_name'));
-	} else {
-		$student_options = array(null, 'Unspecified');
-	}
-
-	$view->with('student_options', $student_options);
+    $view->with('instructor_options', $instructor_options)
+         ->with('student_options', $student_options);
 });
 
 Route::get('/', function()
@@ -34,65 +29,32 @@ Route::get('/', function()
 	// return app()->env;
 });
 
-Route::get('schedules', function()
-{
-	$schedules = Schedule::all();
-	return View::make('schedules.index')->with('schedules', $schedules);
-});
+//Route::resource('schedules', 'SchedulesController');
+Route::resource('students', 'StudentsController');
+Route::resource('instructors', 'InstructorsController');
+
+
+Route::get('schedules', 'SchedulesController@index');
 
 Route::group(array('before' => 'auth'), function()
 {
 
-	Route::get('schedules/create', function()
-	{
-		$schedule = new Schedule;
-		return View::make('schedules.edit')->with('schedule', $schedule)->with('method', 'post');
-	});
+	Route::get('schedules/create', 'SchedulesController@create');
+    Route::post('schedules', 'SchedulesController@store');
+    Route::get('schedules/upload', 'SchedulesController@upload');
 
-	Route::post('schedules', function()
-	{
-		$rules = array(
-			// 'class_date' => 'required',
-			'class_time' => 'required',
-			'class_type' => 'required',
-			'student_id' => 'required',
-			'instructor_id' => 'required',
-			'class_duration' => 'required',
-		);
+});
 
-		$validation_result = Validator::make(Input::all(), $rules);
-
-		if($validation_result->fails()){
-
-			// echo "help";
-			// print_r($validation_result->messages());
-			return Redirect::back()
-				->with('messages', $validation_result->messages());
-
-		} else {
-
-			$schedule = Schedule::create(Input::all());
-			$schedule->user_id = Auth::user()->id;
-			if($schedule->save()) {
-				return Redirect::to('schedules')->with('message', 'Successfully create schedule!');	
-			} else {
-				return Redirect::back()
-					->with('error', 'Could not create scheudle');
-			}
-		}
-		
-	});
-
-});	
-
-Route::get('schedules/{schedule}/edit', function(Schedule $schedule) 
+Route::get('schedules/{schedule}/edit', function(Schedule $schedule)
 {
 	return View::make('schedules.edit')
 		->with('schedule', $schedule)
 		->with('method', 'put');
 });
 
-Route::get('schedules/{schedule}/delete', function(Schedule $schedule) 
+//Route::get('schedules/{schedule}/delete', 'SchedulesController@destroy');
+
+Route::get('schedules/{schedule}/delete', function(Schedule $schedule)
 {
 	return View::make('schedules.edit')
 		->with('schedule', $schedule)
@@ -108,30 +70,12 @@ Route::put('schedules/{schedule}', function(Schedule $schedule)
 	}
 });
 
-Route::delete('schedules/{schedule}', function(Schedule $schedule)
-{
-	$schedule->delete();
-	return Redirect::to('schedules')->with('message', 'Successfully deleted schedule!');
-});
+Route::delete('schedules/{schedule}', 'SchedulesController@destroy');
+Route::get('schedules/instructors/{id}', 'SchedulesController@show');
 
+Route::get('schedules/test_upload', 'SchedulesController@loadCSV');
 
-Route::get('schedules/instructors/{id}', function($id)
-{
-	$instructor = Instructor::whereId($id)->with('schedules')->first();
-	return View::make('schedules.index')->with('instructor', $instructor)->with('schedules', $instructor->schedules);
-});
-
-Route::get('instructors', function()
-{
-	$instructors = Instructor::all();
-	return View::make('instructors.index')->with('instructors', $instructors);
-});
-
-Route::get('students', function()
-{
-	$students = Student::all();
-	return View::make('students.index')->with('students', $students);
-});
+// Login and logout routes
 
 Route::get('login', function()
 {

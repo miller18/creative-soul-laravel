@@ -8,7 +8,9 @@
 	
 	<h2>
 		All @if(isset($instructor)) of {{$instructor->first_name}} {{$instructor->last_name}}'s @endif Schedules
-		<a href="{{ url('schedules/create') }}" class="btn btn-primary pull-right">Add a new schedule</a>
+        <a href="{{ url('schedules/upload') }}" class="btn btn-primary">Upload a new schedule</a>
+
+		<a href="{{ url('schedules/create') }}" class="btn btn-primary">Add a new schedule</a>
 	</h2>	
 
 @stop

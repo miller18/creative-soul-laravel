@@ -1,7 +1,7 @@
 @extends('layouts/master')
 
 @section('header')
-	<a href="#">&larr; Cancel</a>
+	<a href="">&larr; Cancel</a>
 	<h2>
 		@if($method == 'post')
 		  	Add a new schedule
@@ -24,7 +24,8 @@
 			<div class="col-sm-10">
 				{{ Form::text('class_time', null, array('class' => 'form-control')) }}
 			</div>	
-		</div>	
+		</div>
+
 
 		<div class="form-group">
 			{{ Form::label('Class Type', null, array('class' => 'col-sm-2 control-label')) }}

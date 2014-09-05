@@ -3,9 +3,14 @@
 	"description": "The Laravel Framework.",
 	"keywords": ["framework", "laravel"],
 	"license": "MIT",
+	"post-update-cmd": [
+    	"php artisan debugbar:publish"
+	],	
 	"require": {
 		"laravel/framework": "4.2.*",
-		"anahkiasen/rocketeer": "dev-master"
+		"anahkiasen/rocketeer": "dev-master",
+        "maximebf/debugbar": ">=1.0.0",
+		"barryvdh/laravel-debugbar": "1.*"
 	},
 	"autoload": {
 		"classmap": [
